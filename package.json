@@ -1,0 +1,57 @@
+{
+  "name": "graphql-codegen-typescript-react-apollo-named",
+  "description": "",
+  "author": "",
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "tsc",
+    "postbuild": "cd src && copyfiles \"*.handlebars\" ../dist",
+    "prepublish": "npm run build",
+    "test": "jest"
+  },
+  "files": [
+    "/dist"
+  ],
+  "dependencies": {
+    "change-case": "3.0.2",
+    "common-tags": "1.8.0",
+    "dependency-graph": "^0.8.0",
+    "graphql-codegen-core": "0.15.2",
+    "graphql-codegen-plugin-helpers": "0.15.2",
+    "graphql-codegen-typescript-common": "^0.15.2"
+  },
+  "devDependencies": {
+    "@types/node": "^10.12.18",
+    "copyfiles": "^2.1.0",
+    "graphql": "14.0.2",
+    "graphql-codegen-plugin-handlebars-helpers": "0.15.2",
+    "jest": "^23.6.0",
+    "rimraf": "^2.6.2",
+    "ts-jest": "^23.10.5",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.2.2"
+  },
+  "jest": {
+    "globals": {
+      "ts-jest": {
+        "enableTsDiagnostics": false
+      }
+    },
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  },
+  "license": "MIT",
+  "main": "./dist/index.js",
+  "typings": "dist/index.d.ts",
+  "version": "0.15.1-rc4"
+}
