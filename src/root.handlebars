@@ -1,43 +1,50 @@
 {{#ifCond operations.length '!==' 0}}
-{{#unless @root.config.noReactApollo}}
-import * as ReactApollo from 'react-apollo';
-import * as React from 'react';
-{{/unless}}
-
-{{#unless @root.config.noGraphqlTag}}
-import gql from 'graphql-tag';
-{{/unless}}
-
-{{#unless @root.config.noFragments}}
-{{ blockCommentIf 'Fragments' fragments }}
-{{{generateFragments fragments}}}
-{{/unless}}
-
-{{ blockCommentIf 'Components' operations }}
-{{#each operations }}
-export namespace {{convert name}} {
-
-    {{#unless @root.config.noDocument}}
-    export const Document = {{{ gql this }}};
+    {{#unless @root.config.noReactApollo}}
+        import * as ReactApollo from 'react-apollo';
+    {{/unless}}
+    {{#unless @root.config.noGraphqlTag}}
+        import gql from 'graphql-tag';
     {{/unless}}
 
-    {{#unless @root.config.noHOC}}
-    export type {{ name }}Props<TChildProps = any> = {{{propsType this}}} & TChildProps;
-    {{#ifCond operationType '===' 'mutation'}}
-        export type MutationFn = ReactApollo.MutationFn<{{convert operationType}}, Variables>;
-    {{/ifCond}}
-    export function HOC<
-        TProps,
-        TChildProps = any
-    >(
-        operationOptions?: ReactApollo.OperationOption<TProps, {{convert operationType}}, Variables, Props<TChildProps>>
-    ) {
-        return ReactApollo.graphql<TProps, {{convert operationType}}, Variables, Props<TChildProps>>(
-            Document,
-            { name: "{{ name }}", ...operationOptions }
-        );
-    };
-{{/unless}}
-}
-{{/each}}
+    {{!-- this is a helper type: the normal MutationFn promise a void | other mix type --}}
+    {{!-- which messes up code completion --}}
+    export declare type NonVoidMutationFn<
+    TData = any,
+    TVariables = ReactApollo.OperationVariables
+    > = (
+    options?: ReactApollo.MutationOptions<TData, TVariables>
+    ) => Promise<ReactApollo.FetchResult<TData>>;
+
+    {{#unless @root.config.noFragments}}
+        {{ blockCommentIf 'Fragments' fragments }}
+        {{{generateFragments fragments}}}
+    {{/unless}}
+
+    {{ blockCommentIf 'Components' operations }}
+    {{#each operations }}
+            export namespace {{convert name}} {
+
+        {{#unless @root.config.noDocument}}
+                export const Document = {{{ gql this }}};
+        {{/unless}}
+
+        {{#unless @root.config.noHOC}}
+            {{#ifCond operationType '===' 'mutation'}}
+                    export type MutationFn = NonVoidMutationFn<{{convert operationType}}, Variables>;
+                    export type Props<TChildProps extends {} = {}> = { {{ name }}: MutationFn } & TChildProps;
+            {{/ifCond}}
+                export function HOC<
+                TProps,
+                TChildProps = any
+                >(
+                operationOptions?: ReactApollo.OperationOption<TProps, {{convert operationType}}, Variables, Props<TChildProps>>
+                ) {
+                return ReactApollo.graphql<TProps, {{convert operationType}}, Variables, Props<TChildProps>>(
+                Document,
+                { name: "{{ name }}", ...operationOptions }
+                );
+                };
+        {{/unless}}
+            }
+    {{/each}}
 {{/ifCond}}

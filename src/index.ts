@@ -33,7 +33,7 @@ export const plugin: PluginFunction<Config> = async (
     ...flattenDocuments
   };
 
-  return Handlebars.compile(rootTemplate)(hbsContext);
+  return rootTemplate(hbsContext);
 };
 
 export const validate: PluginValidateFn<any> = async (

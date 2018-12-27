@@ -1,4 +1,4 @@
 declare module '*.handlebars' {
-  const content: string;
+  const content: (context: any, execOptions?: any) => string;
   export = content;
 }
