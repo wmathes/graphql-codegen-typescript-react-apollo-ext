@@ -53,5 +53,5 @@
   "license": "MIT",
   "main": "./dist/index.js",
   "typings": "dist/index.d.ts",
-  "version": "0.15.1-rc4"
+  "version": "0.15.1-rc5"
 }

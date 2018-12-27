@@ -1,5 +1,5 @@
 {{#ifCond operations.length '!==' 0}}
-{{#unless @root.config.noReactApolloTag}}
+{{#unless @root.config.noReactApollo}}
 import * as ReactApollo from 'react-apollo';
 import * as React from 'react';
 {{/unless}}
@@ -17,7 +17,7 @@ import gql from 'graphql-tag';
 {{#each operations }}
 export namespace {{convert name}} {
 
-    {{#unless @root.config.noDocuments}}
+    {{#unless @root.config.noDocument}}
     export const Document = {{{ gql this }}};
     {{/unless}}
 

@@ -10,8 +10,10 @@ import * as rootTemplate from './root.handlebars';
 
 export interface Config extends TypeScriptCommonConfig {
   noGraphqlTag?: boolean;
+  noReactApollo?: boolean;
   noNamespaces?: boolean;
   noHOC?: boolean;
+  noDocument?: boolean;
 }
 
 export const plugin: PluginFunction<Config> = async (
