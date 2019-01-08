@@ -29,11 +29,11 @@ export namespace {{convert name}} {
     {{/unless}}
 
     {{#unless @root.config.noHOC}}
-        {{#ifCond operationType '===' 'mutation'}}
+    {{#ifCond operationType '===' 'mutation'}}
     export type MutationFn = NonVoidMutationFn<{{convert operationType}}, Variables>;
+    {{/ifCond}}
 
-    export type Props<TChildProps extends {} = {}> = { {{ name }}: MutationFn } & TChildProps;
-        {{/ifCond}}
+    export type Props<TChildProps extends {} = {}> = {{{propsType this}}} & TChildProps;
 
     export function HOC<
         TProps,

@@ -8,22 +8,16 @@ export const propsType = (convert: any) => ({ name, operationType }: any, option
   const { noNamespaces } = options.data.root.config || { noNamespaces: false };
   if (operationType === 'mutation') {
     return `
-            Partial<
-                ${ convert(name) }ReactApollo.MutateProps<
-                                        ${noNamespaces ? convert(name) : ''}Mutation, 
-                                        ${noNamespaces ? convert(name) : ''}Variables
-                                        >
-                >
-        `;
+      { ${ convert(name) }: ${noNamespaces ? convert(name) : ''}MutationFn }
+    `;
   } else {
     return `
-            Partial<
-                ReactApollo.DataProps<
-                                        ${noNamespaces ? convert(name) : ''}${convert(operationType)}, 
-                                        ${noNamespaces ? convert(name) : ''}Variables
-                                    >
-                    >
-        `;
+      { ${ convert(name) }: ReactApollo.DataValue<
+            ${noNamespaces ? convert(name) : ''}${convert(operationType)}, 
+            ${noNamespaces ? convert(name) : ''}Variables
+        >
+      }
+    `;
   }
 };
 
